@@ -22,10 +22,11 @@ def main():
         render=True,  # 画面表示
         real_time=True,  # 実時間での表示
         stacked=False,
-        # logdir="./logs",  # ログディレクトリ
+        logdir="./logs",  # ログディレクトリ
         dump_full_episodes=True,
-        # number_of_left_players_agent_controls=0,
-        # number_of_right_players_agent_controls=0,
+        number_of_left_players_agent_controls=0,
+        number_of_right_players_agent_controls=0,
+        players = "",
     )
 
     data_dir = 'data/unofficial/2023041506'
@@ -52,7 +53,7 @@ def main():
     )
 
     # 特定フレームのデータ抽出
-    target_frame = int(tracking_df.loc[tracking_df['No'] == 0, "Frame"].iloc[0])
+    target_frame = int(tracking_df.loc[tracking_df['No'] == 0, "Frame"].sample(1).iloc[0])
     tracking_framedf = tracking_df.loc[tracking_df["Frame"] == target_frame]
 
     scenario_file = make_scenario_from_real_data(tracking_framedf)
@@ -68,7 +69,8 @@ def main():
     while not done:
         action = env.action_space.sample()
         print(f"[info] {action=}")
-        obs, reward, done, info = env.step(action)
+        # obs, reward, done, info = env.step(action)
+        obs, reward, done, info = env.step([])
         print(f"[info] {obs=}")
         print(f"[info] {info=}")
         env.render()
