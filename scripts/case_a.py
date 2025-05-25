@@ -18,14 +18,14 @@ def main():
     # 環境生成
     p_scenario = './scenarios/from_real_soccer_data.py'
     env_dict = dict(
-        representation="extracted",  # 入力情報
+        representation="simple115",  # 入力情報
         render=True,  # 画面表示
         real_time=True,  # 実時間での表示
         stacked=False,
         # logdir="./logs",  # ログディレクトリ
-        write_video=False,        # 動画保存
-        number_of_left_players_agent_controls=0,
-        number_of_right_players_agent_controls=0,
+        dump_full_episodes=True,
+        # number_of_left_players_agent_controls=0,
+        # number_of_right_players_agent_controls=0,
     )
 
     data_dir = 'data/unofficial/2023041506'
@@ -69,6 +69,7 @@ def main():
         action = env.action_space.sample()
         print(f"[info] {action=}")
         obs, reward, done, info = env.step(action)
+        print(f"[info] {obs=}")
         print(f"[info] {info=}")
         env.render()
         print(f"[info] rendered")
