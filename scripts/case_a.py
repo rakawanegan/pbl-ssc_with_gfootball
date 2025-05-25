@@ -16,18 +16,23 @@ from src.real_data import make_scenario_from_real_data, assosiate_player_detail_
 
 def main():
     # 環境生成
+    render = False  # 画面表示
+    dump = False  # ログ出力
     p_scenario = './scenarios/from_real_soccer_data.py'
     env_dict = dict(
         representation="simple115",  # 入力情報
-        render=True,  # 画面表示
-        real_time=True,  # 実時間での表示
         stacked=False,
-        logdir="./logs",  # ログディレクトリ
-        dump_full_episodes=True,
         number_of_left_players_agent_controls=0,
         number_of_right_players_agent_controls=0,
         players = "",
     )
+
+    if render:
+        env_dict["render"] = True
+        env_dict["real_time"] = True
+
+    if dump:
+        env_dict["dump_full_episodes"] = True
 
     data_dir = 'data/unofficial/2023041506'
     p_play = os.path.join(data_dir, 'play.csv')
@@ -61,21 +66,27 @@ def main():
     with open(p_scenario, "w", encoding="utf-8") as f:
         f.write(scenario_file)
 
-    env = create_environment_with_custom_environment(p_scenario, **env_dict)
+    max_iter = 100
+    results = list()
+    for n_iter in range(max_iter):
+        env = create_environment_with_custom_environment(p_scenario, **env_dict)
 
-    env.render()
-    obs = env.reset()
-    done = False
-    while not done:
-        action = env.action_space.sample()
-        print(f"[info] {action=}")
-        # obs, reward, done, info = env.step(action)
-        obs, reward, done, info = env.step([])
-        print(f"[info] {obs=}")
-        print(f"[info] {info=}")
-        env.render()
-        print(f"[info] rendered")
-    env.close()
+        if render:
+            env.render()
+        env.reset()
+        done = False
+        while not done:
+            action = env.action_space.sample()
+            obs, reward, done, info = env.step([])
+            if render:
+                env.render()
+        env.close()
+        winner = "Home" if info["score_reward"] == 1 else "Away" if info["score_reward"] == -1 else "Draw"
+        print(f"[info] Iteration {n_iter + 1}/{max_iter}: Winner is {winner}")
+        results.append(winner)
+
+    print(f"[info] {max_iter} iterations completed.")
+    print(f"[info] Results of Winning rate: {results.count('Home') / max_iter * 100:.2f}% Home, {results.count('Away') / max_iter * 100:.2f}% Away, {results.count('Draw') / max_iter * 100:.2f}% Draw")
 
 
 if __name__ == "__main__":
