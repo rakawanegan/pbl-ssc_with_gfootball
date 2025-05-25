@@ -13,6 +13,9 @@ obs = env.reset()
 done = False
 while not done:
     action = env.action_space.sample()
+    print(f"[info] {action=}")
     obs, reward, done, info = env.step(action)
+    print(f"[info] {info=}")
     env.render()
+    print(f"[info] rendered")
 env.close()

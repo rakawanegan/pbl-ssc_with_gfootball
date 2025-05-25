@@ -11,16 +11,20 @@ import sys;sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__
 
 from src.util import make_player_df_from_playdf, norm_xy_to_gfootball
 from src.scenario import create_environment_with_custom_environment
-from src.real_data import make_scenario_from_real_data
+from src.real_data import make_scenario_from_real_data, assosiate_player_detail_role
 
 
 def main():
     # 環境生成
     p_scenario = './scenarios/from_real_soccer_data.py'
     env_dict = dict(
-        representation="simple115",  # 入力情報
-        render=True,
-        write_video=False,        # 動画保存を有効化
+        representation="extracted",  # 入力情報
+        render=True,  # 画面表示
+        stacked=False,
+        # logdir="./logs",  # ログディレクトリ
+        write_video=False,        # 動画保存
+        number_of_left_players_agent_controls=0,
+        number_of_right_players_agent_controls=0,
     )
 
     data_dir = 'data/unofficial/2023041506'
@@ -34,6 +38,11 @@ def main():
         lambda row: pd.Series(norm_xy_to_gfootball(row["X"], row["Y"])),
         axis=1
     )
+
+    ini_frame = int(tracking_df.loc[tracking_df['No'] == 0, "Frame"].iloc[0])
+    tracking_framedf = tracking_df.loc[tracking_df["Frame"] == ini_frame]
+    player_df = assosiate_player_detail_role(player_df, tracking_framedf)
+
     tracking_df = tracking_df.merge(
         player_df[["ホームアウェイF", "選手背番号", "ポジション"]],
         left_on=["HA", "No"],
@@ -42,8 +51,8 @@ def main():
     )
 
     # 特定フレームのデータ抽出
-    ini_frame = int(tracking_df.loc[tracking_df['No'] == 0, "Frame"].iloc[0])
-    tracking_framedf = tracking_df.loc[tracking_df["Frame"] == ini_frame]
+    target_frame = int(tracking_df.loc[tracking_df['No'] == 0, "Frame"].iloc[0])
+    tracking_framedf = tracking_df.loc[tracking_df["Frame"] == target_frame]
 
     scenario_file = make_scenario_from_real_data(tracking_framedf)
 
@@ -52,12 +61,17 @@ def main():
 
     env = create_environment_with_custom_environment(p_scenario, **env_dict)
 
+    env.render()
     obs = env.reset()
     done = False
     while not done:
-        action = env.action_space.sample()
-        obs, reward, done, info = env.step(action)
+        # action = env.action_space.sample()
+        # print(f"[info] {action=}")
+        # obs, reward, done, info = env.step(action)
+        obs, reward, done, info = env.step([])
+        print(f"[info] {info=}")
         env.render()
+        print(f"[info] rendered")
     env.close()
 
 
