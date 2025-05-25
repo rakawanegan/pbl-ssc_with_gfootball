@@ -1,7 +1,9 @@
 import os
 import shutil
 import importlib.util
-from gfootball.env import create_environment
+
+from gfootball.env import config
+from gfootball.env import football_env
 
 def create_environment_with_custom_environment(custom_scenario_path, **kwargs):
     """
@@ -40,7 +42,11 @@ def create_environment_with_custom_environment(custom_scenario_path, **kwargs):
         env_name = os.path.splitext(scenario_filename)[0]
 
         # 環境を作成
-        env = create_environment(env_name=env_name, **kwargs)
+        cfg_values = kwargs.copy()
+        cfg_values['action_set'] = 'default'
+        cfg_values['level'] = env_name  # シナリオ名をレベルとして設定
+        cfg = config.Config(cfg_values)
+        env = football_env.FootballEnv(cfg)
         return env
 
     finally:

@@ -54,6 +54,14 @@ def make_scenario_from_real_data(tracking_framedf):
     tracking_framedf["gfootball_role"] = tracking_framedf["ポジション"].map(position_to_gfootball_role_dict)
 
     ball_point_x, ball_point_y = map(float, tracking_framedf.loc[tracking_framedf["HA"] == 0, ["norm_X", "norm_Y"]].values.flatten())
+    # GFootballではシナリオのロールの登場順番が揃っている必要がある（GK→*B→*M→*F）.
+    position_order = ['GK', 'CB', 'LB', 'RB', 'DM', 'CM', 'LM', 'RM', 'AM', 'CF', 'LF', 'RF', 'FW']
+    tracking_framedf['ポジション'] = pd.Categorical(
+        tracking_framedf['ポジション'],
+        categories=position_order,
+        ordered=True
+    )
+    tracking_framedf = tracking_framedf.sort_values("ポジション")
 
     # 元のAwayteam (HA == 2) が新しいHometeam (first_team) になる
     hometeams = list()
