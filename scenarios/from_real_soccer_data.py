@@ -6,8 +6,7 @@ def build_scenario(builder):
 	builder.config().left_team_difficulty = 1.0
 	builder.config().deterministic = False
 	builder.config().end_episode_on_score = True
-	builder.config().deterministic = True
-	builder.SetBallPosition(-0.9055238095238095, 0.20765294117647054)
+	builder.SetBallPosition(-0.1024761904761905, -0.2848588235294117)
 	if builder.EpisodeNumber() % 2 == 0:
 		first_team = Team.e_Left
 		second_team = Team.e_Right
@@ -15,26 +14,26 @@ def build_scenario(builder):
 		first_team = Team.e_Right
 		second_team = Team.e_Left
 	builder.SetTeam(first_team)
-	builder.AddPlayer(-0.965524, -0.065841, e_PlayerRole_GK)
-	builder.AddPlayer(-0.837524, -0.198882, e_PlayerRole_LB)
-	builder.AddPlayer(-0.519048, 0.080418, e_PlayerRole_RB)
-	builder.AddPlayer(0.065143, -0.349959, e_PlayerRole_LM)
-	builder.AddPlayer(-0.478476, -0.055712, e_PlayerRole_RM)
-	builder.AddPlayer(0.122667, -0.185541, e_PlayerRole_CF)
-	builder.AddPlayer(-0.088952, 0.119576, e_PlayerRole_CF)
-	builder.AddPlayer(-0.939048, -0.203082, e_PlayerRole_CB)
-	builder.AddPlayer(-0.481714, -0.226059, e_PlayerRole_DM)
-	builder.AddPlayer(-0.140952, -0.067818, e_PlayerRole_DM)
-	builder.AddPlayer(-0.676190, -0.014576, e_PlayerRole_CB)
+	builder.AddPlayer(-0.669333, 0.046200, e_PlayerRole_GK)
+	builder.AddPlayer(-0.220952, -0.060653, e_PlayerRole_LB)
+	builder.AddPlayer(0.278476, 0.331553, e_PlayerRole_RB)
+	builder.AddPlayer(0.288952, -0.168247, e_PlayerRole_LM)
+	builder.AddPlayer(0.015810, 0.159971, e_PlayerRole_RM)
+	builder.AddPlayer(0.333714, 0.178871, e_PlayerRole_CF)
+	builder.AddPlayer(0.234286, 0.218524, e_PlayerRole_CF)
+	builder.AddPlayer(-0.210095, 0.083135, e_PlayerRole_CB)
+	builder.AddPlayer(-0.112571, 0.244094, e_PlayerRole_DM)
+	builder.AddPlayer(0.010667, 0.034588, e_PlayerRole_DM)
+	builder.AddPlayer(-0.196762, 0.252247, e_PlayerRole_CB)
 	builder.SetTeam(second_team)
-	builder.AddPlayer(-0.531048, -0.039529, e_PlayerRole_GK)
-	builder.AddPlayer(-0.068952, 0.304994, e_PlayerRole_LB)
-	builder.AddPlayer(0.132762, -0.195547, e_PlayerRole_RB)
-	builder.AddPlayer(0.185714, 0.092771, e_PlayerRole_LM)
-	builder.AddPlayer(0.279238, 0.236682, e_PlayerRole_RM)
-	builder.AddPlayer(0.925333, 0.199624, e_PlayerRole_CF)
-	builder.AddPlayer(0.732571, 0.290047, e_PlayerRole_CF)
-	builder.AddPlayer(0.533714, 0.032241, e_PlayerRole_CF)
-	builder.AddPlayer(-0.113333, -0.053735, e_PlayerRole_CB)
-	builder.AddPlayer(0.401524, -0.061641, e_PlayerRole_DM)
-	builder.AddPlayer(-0.075429, 0.156882, e_PlayerRole_CB)
+	builder.AddPlayer(-0.764571, -0.036688, e_PlayerRole_GK)
+	builder.AddPlayer(-0.347810, 0.071153, e_PlayerRole_LB)
+	builder.AddPlayer(-0.164571, -0.315124, e_PlayerRole_RB)
+	builder.AddPlayer(-0.087810, -0.209012, e_PlayerRole_LM)
+	builder.AddPlayer(0.023619, -0.095735, e_PlayerRole_RM)
+	builder.AddPlayer(-0.141524, -0.291406, e_PlayerRole_CF)
+	builder.AddPlayer(0.001333, 0.114882, e_PlayerRole_CF)
+	builder.AddPlayer(0.130667, -0.064729, e_PlayerRole_CF)
+	builder.AddPlayer(-0.332000, -0.148976, e_PlayerRole_CB)
+	builder.AddPlayer(0.102476, -0.284859, e_PlayerRole_DM)
+	builder.AddPlayer(-0.336571, -0.031871, e_PlayerRole_CB)

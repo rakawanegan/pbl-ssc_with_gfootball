@@ -90,7 +90,6 @@ def make_scenario_from_real_data(tracking_framedf):
     "\tbuilder.config().end_episode_on_score = True\n"
     # "\tbuilder.config().end_episode_on_out_of_play = True\n"
     # "\tbuilder.config().end_episode_on_possession_change = True\n"
-    "\tbuilder.config().deterministic = True\n"
     f"\tbuilder.SetBallPosition({ball_point_x}, {ball_point_y})\n"
     "\tif builder.EpisodeNumber() % 2 == 0:\n"
     "\t\tfirst_team = Team.e_Left\n"
