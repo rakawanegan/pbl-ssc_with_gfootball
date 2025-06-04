@@ -1,0 +1,13 @@
+hydra:
+  job:
+    chdir: false
+
+defaults:
+  - _self_
+  - data: shoot1
+
+debug: false
+
+n_iter: 100
+fps: 25
+buf_time: 10

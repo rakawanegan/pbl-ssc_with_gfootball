@@ -1,0 +1,1 @@
+python ./scripts/case_a_from_chance.py --multirun data=shoot1,shoot2,shoot3,shoot4,shoot5,shoot6,shoot7,shoot8 > result.log

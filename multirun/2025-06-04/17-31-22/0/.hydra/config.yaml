@@ -1,0 +1,8 @@
+debug: false
+n_iter: 100
+fps: 25
+buf_time: 10
+data:
+  frame_id: 1480859
+  is_goal: true
+  which_chance: Away

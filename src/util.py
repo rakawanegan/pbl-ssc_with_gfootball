@@ -30,3 +30,9 @@ def norm_xy_to_gfootball(x, y):
     norm_y = ((y - datastudium_y_min) / (datastudium_y_max - datastudium_y_min)) * (gfootball_y_max - gfootball_y_min) + gfootball_y_min
 
     return norm_x, norm_y
+
+def find_nearest(value_list: list[float | int], target_value: float | int) -> float | int | None:
+    if not value_list:
+        return None
+    nearest_value = min(value_list, key=lambda x: abs(x - target_value))
+    return nearest_value
