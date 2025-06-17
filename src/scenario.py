@@ -5,11 +5,12 @@ import importlib.util
 from gfootball.env import config
 from gfootball.env import football_env
 
+
 def create_environment_with_custom_environment(custom_scenario_path, **kwargs):
     """
     指定されたカスタムシナリオを GFootball ライブラリ内に一時的にコピーし、
     create_environment を呼び出して環境を作成後、シナリオを削除する。
-    
+
     Parameters:
         custom_scenario_path (str): カスタムシナリオファイルのフルパス
         **kwargs: create_environment に渡す他の引数
@@ -19,7 +20,7 @@ def create_environment_with_custom_environment(custom_scenario_path, **kwargs):
     """
     if not os.path.isfile(custom_scenario_path):
         raise FileNotFoundError(f"指定されたファイルが存在しません: {custom_scenario_path}")
-    
+
     # GFootballのscenariosディレクトリを特定
     gfootball_spec = importlib.util.find_spec("gfootball")
     if gfootball_spec is None or gfootball_spec.submodule_search_locations is None:
@@ -43,8 +44,8 @@ def create_environment_with_custom_environment(custom_scenario_path, **kwargs):
 
         # 環境を作成
         cfg_values = kwargs.copy()
-        cfg_values['action_set'] = 'default'
-        cfg_values['level'] = env_name  # シナリオ名をレベルとして設定
+        cfg_values["action_set"] = "default"
+        cfg_values["level"] = env_name  # シナリオ名をレベルとして設定
         cfg = config.Config(cfg_values)
         env = football_env.FootballEnv(cfg)
         return env

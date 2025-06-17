@@ -3,14 +3,16 @@
 """
 import os
 
-import sys;sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.scenario import create_environment_with_custom_environment
 
 
 def main():
     # 環境生成
-    p_scenario = './scenarios/from_real_soccer_data.py'
+    p_scenario = "./scenarios/from_real_soccer_data.py"
     env_dict = dict(
         representation="extracted",  # 入力情報
         players=["agent:left_players=1"],
@@ -18,7 +20,7 @@ def main():
         real_time=True,  # 実時間での表示
         stacked=False,
         logdir="./logs",  # ログディレクトリ
-        write_video=False,        # 動画保存
+        write_video=False,  # 動画保存
     )
 
     env = create_environment_with_custom_environment(p_scenario, **env_dict)
