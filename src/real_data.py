@@ -60,6 +60,7 @@ def make_scenario_from_real_data(tracking_framedf, cfg):
             tracking_framedf["HA"] == 0, ["norm_X", "norm_Y"]
         ].values.flatten(),
     )
+    ball_point_y *= -1  # GFootballではボールのY座標を反転する
     # GFootballではシナリオのロールの登場順番が揃っている必要がある（GK→*B→*M→*F）.
     position_order = [
         "GK",
