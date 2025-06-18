@@ -84,7 +84,7 @@ def make_scenario_from_real_data(tracking_framedf, cfg):
     # 元のAwayteam (HA == 2) が新しいHometeam (first_team) になる
     hometeams = list()
     # GFootballでは first_team の座標系として Y を反転する想定 (元のコードの HA == 1 に対する処理)
-    tracking_framedf.loc[tracking_framedf["HA"] == 2, "norm_Y"] *= -1
+    # tracking_framedf.loc[tracking_framedf["HA"] == 2, "norm_Y"] *= -1
     for _, row in tracking_framedf.loc[tracking_framedf["HA"] == 2].iterrows():
         hometeams.append(
             f'\tbuilder.AddPlayer({row["norm_X"]:.6f}, {row["norm_Y"]:.6f}, {row["gfootball_role"]})'
@@ -113,12 +113,8 @@ def make_scenario_from_real_data(tracking_framedf, cfg):
         "\tbuilder.config().end_episode_on_out_of_play = True\n"
         "\tbuilder.config().end_episode_on_possession_change = True\n"
         f"\tbuilder.SetBallPosition({ball_point_x}, {ball_point_y})\n"
-        "\tif builder.EpisodeNumber() % 2 == 0:\n"
-        "\t\tfirst_team = Team.e_Left\n"
-        "\t\tsecond_team = Team.e_Right\n"
-        "\telse:\n"
-        "\t\tfirst_team = Team.e_Right\n"
-        "\t\tsecond_team = Team.e_Left\n"
+        "\tfirst_team = Team.e_Left\n"
+        "\tsecond_team = Team.e_Right\n"
         "\tbuilder.SetTeam(first_team)\n"
         f"{hometeams}\n"
         "\tbuilder.SetTeam(second_team)\n"

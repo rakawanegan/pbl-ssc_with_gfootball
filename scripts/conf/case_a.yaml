@@ -4,12 +4,12 @@ hydra:
 
 defaults:
   - _self_
-  - data: shoot1
+  - data: shoot4
 
 debug: true
 
 n_iter: 1
-n_sub_iter: 100
+n_sub_iter: 1
 
 fps: 25
 buf_time: 0
