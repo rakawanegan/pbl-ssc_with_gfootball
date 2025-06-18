@@ -29,7 +29,7 @@ def extract_gfootball_scenario_data(filepath):
         r"builder\.SetBallPosition\(([-+]?\d+\.\d+),\s*([-+]?\d+\.\d+)\)", content
     )
     if ball_match:
-        ball_position = (float(ball_match.group(1)), float(ball_match.group(2)))
+        ball_position = [float(ball_match.group(1)), float(ball_match.group(2))]
         ball_position[1] *= -1  # Y座標を反転
 
     first_team_block_match = re.search(
