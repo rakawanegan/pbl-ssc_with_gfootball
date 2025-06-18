@@ -5,6 +5,7 @@ import os
 import gym
 import pandas as pd
 import hydra
+from hydra.core.hydra_config import HydraConfig
 import swifter
 # from stable_baselines3 import PPO
 
@@ -15,6 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.util import make_player_df_from_playdf, norm_xy_to_gfootball, find_nearest
 from src.scenario import create_environment_with_custom_environment
 from src.real_data import make_scenario_from_real_data, assosiate_player_detail_role
+from src.visualization import plot_gfootball_scenario_with_roles
 
 
 def defeat_excess_logger():
@@ -34,6 +36,7 @@ def defeat_excess_logger():
 
 @hydra.main(version_base=None, config_path="conf", config_name="case_a")
 def main(cfg):
+    output_dir = HydraConfig.get().runtime.output_dir
     if not cfg.debug:
         defeat_excess_logger()
     # 環境生成
@@ -84,6 +87,9 @@ def main(cfg):
         tracking_df.loc[tracking_df["No"] == 0, "Frame"].unique().tolist()
     )
     approx_target_frame = find_nearest(contain_ball_frames, target_frame)
+    if cfg.debug:
+        print(f"[debug] Target frame: {target_frame}")
+        print(f"[debug] Approximate target frame: {approx_target_frame}")
     tracking_framedf = tracking_df.loc[tracking_df["Frame"] == approx_target_frame]
 
     scenario_file = make_scenario_from_real_data(tracking_framedf, cfg)
@@ -91,6 +97,7 @@ def main(cfg):
     with open(p_scenario, "w", encoding="utf-8") as f:
         f.write(scenario_file)
 
+    plot_gfootball_scenario_with_roles(p_scenario, output_dir)
     # シミュレーションの実行
 
     results = list()
@@ -113,19 +120,13 @@ def main(cfg):
                 "Home"
                 if info["score_reward"] == 1
                 else "Away"
-                if info["score_reward"] == -1
-                else "Draw"
             )
             if cfg.debug:
                 print(f"[debug] Iteration {n_iter + 1}/{cfg.n_iter}: Winner is {winner}")
             sub_results.append(winner)
         chance_team_winning_percentage = sub_results.count('Home') / cfg.n_sub_iter * 100
-        pinch_team_winning_percentage = sub_results.count('Away') / cfg.n_sub_iter * 100
-        draw_percentage = sub_results.count('Draw') / cfg.n_sub_iter * 100
         results.append({
             "chance_team": chance_team_winning_percentage,
-            "pinch_team": pinch_team_winning_percentage,
-            "draw": draw_percentage,
         })
 
         if cfg.debug:
@@ -135,7 +136,6 @@ def main(cfg):
         )
         print(
             f"[info] Results of Winning rate: {chance_team_winning_percentage:.2f}% Chance Team, "
-            f"{pinch_team_winning_percentage:.2f}% Pinch Team, {draw_percentage:.2f}% Draw"
         )
         sub_results.clear()
 
@@ -144,13 +144,11 @@ def main(cfg):
         "frame_id": [cfg.data.frame_id] * len(results),
         "chance_team": [cfg.data.which_chance] * len(results),
         "chance_team_winning_percentage": [r["chance_team"] for r in results],
-        "pinch_team_winning_percentage": [r["pinch_team"] for r in results],
-        "draw_percentage": [r["draw"] for r in results],
         "n_iter": [cfg.n_iter] * len(results),
         "n_sub_iter": [cfg.n_sub_iter] * len(results),
     })
     print(f'[info] chance_team_winning_percentage: {results_df["chance_team_winning_percentage"].mean():.2f}%')
-    results_csv_path = os.path.join(cfg.output_dir, f"results_{cfg.data.frame_id}.csv")
+    results_csv_path = os.path.join(output_dir, f"results_{cfg.data.frame_id}.csv")
     results_df.to_csv(results_csv_path, index=False, encoding="utf-8")
 
 
