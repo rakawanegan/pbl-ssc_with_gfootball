@@ -44,7 +44,7 @@ def extract_gfootball_scenario_data(filepath):
             first_team_block,
         )
         left_team_players = [
-            (float(x), float(y), role) for x, y, role in player_matches
+            (float(x), -float(y), role) for x, y, role in player_matches
         ]
 
     second_team_block_match = re.search(
