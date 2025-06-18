@@ -5,7 +5,8 @@ import os
 import gym
 import pandas as pd
 import swifter
-from stable_baselines3 import PPO
+import hydra
+# from stable_baselines3 import PPO
 
 import sys
 
@@ -16,7 +17,8 @@ from src.scenario import create_environment_with_custom_environment
 from src.real_data import make_scenario_from_real_data, assosiate_player_detail_role
 
 
-def main():
+@hydra.main(version_base=None, config_path="conf", config_name="case_a")
+def main(cfg):
     # 環境生成
     render = False  # 画面表示
     dump = False  # ログ出力
@@ -64,7 +66,7 @@ def main():
     )
     tracking_framedf = tracking_df.loc[tracking_df["Frame"] == target_frame]
 
-    scenario_file = make_scenario_from_real_data(tracking_framedf)
+    scenario_file = make_scenario_from_real_data(tracking_framedf, cfg)
 
     with open(p_scenario, "w", encoding="utf-8") as f:
         f.write(scenario_file)

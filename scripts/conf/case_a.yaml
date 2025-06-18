@@ -8,6 +8,12 @@ defaults:
 
 debug: false
 
+output_dir: outputs/
+
 n_iter: 100
+n_sub_iter: 100
+
 fps: 25
 buf_time: 10
+
+game_duration: 750  # steps

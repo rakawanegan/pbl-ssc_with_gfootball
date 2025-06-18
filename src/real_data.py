@@ -33,7 +33,7 @@ def assosiate_player_detail_role(player_df, init_frame_tracking_df):
     return new_player_df
 
 
-def make_scenario_from_real_data(tracking_framedf):
+def make_scenario_from_real_data(tracking_framedf, cfg):
     tracking_framedf = tracking_framedf.copy()
 
     position_to_gfootball_role_dict = {
@@ -104,7 +104,7 @@ def make_scenario_from_real_data(tracking_framedf):
     return (
         "from gfootball.scenarios import *\n\n"
         "def build_scenario(builder):\n"
-        "\tbuilder.config().game_duration = 3000\n"
+        f"\tbuilder.config().game_duration = {cfg.game_duration}\n"
         "\tbuilder.config().right_team_difficulty = 1.0\n"
         "\tbuilder.config().left_team_difficulty = 1.0\n"
         "\tbuilder.config().deterministic = False\n"

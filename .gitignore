@@ -1,4 +1,5 @@
 *.zip
+*.pyc
 data/
 outputs
 logs
