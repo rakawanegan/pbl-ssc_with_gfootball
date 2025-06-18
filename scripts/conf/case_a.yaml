@@ -8,10 +8,10 @@ defaults:
 
 debug: true
 
-n_iter: 1
-n_sub_iter: 1
+n_iter: 100
+n_sub_iter: 100
 
 fps: 25
 buf_time: 0
 
-game_duration: 750  # steps
+game_duration: 500  # steps

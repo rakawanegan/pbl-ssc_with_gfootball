@@ -116,15 +116,20 @@ def main(cfg):
                 if render:
                     env.render()
             env.close()
+
+            # home is left team, away is right team. if home team wins, score_reward is 1
             winner = (
                 "Home"
                 if info["score_reward"] == 1
                 else "Away"
+                if info["score_reward"] == -1
+                else "Draw"
             )
+
             if cfg.debug:
                 print(f"[debug] Iteration {n_iter + 1}/{cfg.n_iter}: Winner is {winner}")
             sub_results.append(winner)
-        chance_team_winning_percentage = sub_results.count('Home') / cfg.n_sub_iter * 100
+        chance_team_winning_percentage = sub_results.count(cfg.data.which_chance) / cfg.n_sub_iter * 100
         results.append({
             "chance_team": chance_team_winning_percentage,
         })

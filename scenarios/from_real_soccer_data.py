@@ -1,14 +1,13 @@
 from gfootball.scenarios import *
 
 def build_scenario(builder):
-	builder.config().game_duration = 750
+	builder.config().game_duration = 500
 	builder.config().right_team_difficulty = 1.0
 	builder.config().left_team_difficulty = 1.0
 	builder.config().deterministic = False
 	builder.config().end_episode_on_score = True
 	builder.config().end_episode_on_out_of_play = True
-	builder.config().end_episode_on_possession_change = True
-	builder.SetBallPosition(-0.5689523809523809, 0.17182941176470595)
+	builder.SetBallPosition(-0.5689523809523809, -0.17182941176470595)
 	first_team = Team.e_Left
 	second_team = Team.e_Right
 	builder.SetTeam(first_team)

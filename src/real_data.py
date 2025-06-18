@@ -112,7 +112,7 @@ def make_scenario_from_real_data(tracking_framedf, cfg):
         # "\tbuilder.config().offsides = False\n"
         "\tbuilder.config().end_episode_on_score = True\n"
         "\tbuilder.config().end_episode_on_out_of_play = True\n"
-        "\tbuilder.config().end_episode_on_possession_change = True\n"
+        # "\tbuilder.config().end_episode_on_possession_change = True\n"
         f"\tbuilder.SetBallPosition({ball_point_x}, {ball_point_y})\n"
         "\tfirst_team = Team.e_Left\n"
         "\tsecond_team = Team.e_Right\n"
