@@ -6,7 +6,9 @@ defaults:
   - _self_
   - data: shoot4
 
-debug: true
+debug: false
+render: false
+dump: false
 
 n_iter: 100
 n_sub_iter: 100
