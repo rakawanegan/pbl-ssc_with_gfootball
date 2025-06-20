@@ -140,9 +140,7 @@ def plot_gfootball_scenario(
     plt.ylim([-0.5, 0.5])
     plt.gca().set_aspect("equal", adjustable="box")
     plt.tight_layout()
-    output_filename = os.path.join(
-        output_dir, "input_scenario_plot.png"
-    )
+    output_filename = os.path.join(output_dir, "input_scenario_plot.png")
     plt.savefig(output_filename)
     plt.close()
 
@@ -161,4 +159,6 @@ def plot_gfootball_scenario_with_roles(filepath, output_dir):
         left_team_players,
         right_team_players,
     ) = extract_gfootball_scenario_data(filepath)
-    plot_gfootball_scenario(ball_position, left_team_players, right_team_players, output_dir)
+    plot_gfootball_scenario(
+        ball_position, left_team_players, right_team_players, output_dir
+    )
