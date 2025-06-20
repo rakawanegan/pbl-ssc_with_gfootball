@@ -1,6 +1,5 @@
 import numpy as np
-import gfootball.env as football_env
-from gfootball.env import config as gfootball_config
+
 
 class ShootDetector:
     """
@@ -14,6 +13,7 @@ class ShootDetector:
         コンストラクタ。
         """
         self.previous_obs = None
+        self.last_shot_coordinates = None # シュートが検出された際の座標を保持する
 
         # ゴールポストのY座標 (Google Footballの標準ゴール幅を考慮)
         self.goal_y_upper = 0.2
@@ -43,6 +43,11 @@ class ShootDetector:
             return False
 
         is_shot = self._detect_shot(current_obs, self.previous_obs)
+        if is_shot:
+            self.last_shot_coordinates = np.array(current_obs['ball']).tolist() # シュート検出時に座標を保存
+        else:
+            self.last_shot_coordinates = None # シュートが検出されなかった場合はリセット
+
         self.previous_obs = current_obs
         return is_shot
 
@@ -103,3 +108,13 @@ class ShootDetector:
             return True # すべての条件を満たした場合、シュートと判断する
 
         return False
+
+    def dump_shot_coordinates(self) -> list:
+        """
+        最後にシュートが検出された際のボールの座標を返す。
+        シュートが検出されていない場合はNoneを返す。
+
+        Returns:
+            list: シュートが打たれた際のボールの座標 [x, y, z] のリストである。シュートが検出されていない場合はNone。
+        """
+        return self.last_shot_coordinates
