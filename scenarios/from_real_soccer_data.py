@@ -1,7 +1,7 @@
 from gfootball.scenarios import *
 
 def build_scenario(builder):
-	builder.config().game_duration = 500
+	builder.config().game_duration = 200
 	builder.config().right_team_difficulty = 1.0
 	builder.config().left_team_difficulty = 1.0
 	builder.config().deterministic = False
