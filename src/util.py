@@ -22,6 +22,7 @@ def make_player_df_from_playdf(playdf):
 
 
 def norm_xy_to_gfootball(x, y):
+    # ref: https://github.com/google-research/football/blob/master/gfootball/doc/observation.md
     # GFootball の座標範囲
     gfootball_x_min, gfootball_x_max = -1.0, 1.0
     gfootball_y_min, gfootball_y_max = -0.42, 0.42

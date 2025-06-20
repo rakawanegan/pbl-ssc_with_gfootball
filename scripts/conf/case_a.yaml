@@ -10,8 +10,8 @@ debug: false
 render: false
 dump: false
 
-n_iter: 10
-n_sub_iter: 10
+n_iter: 100
+n_sub_iter: 100
 
 fps: 25
 buf_time: 0

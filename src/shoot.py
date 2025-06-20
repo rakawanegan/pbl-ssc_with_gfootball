@@ -16,8 +16,8 @@ class ShootDetector:
         self.last_shoot_info = None  # シュートが検出された際の座標と方向を保持する
 
         # ゴールポストのY座標 (Google Footballの標準ゴール幅を考慮)
-        self.goal_y_upper = 0.2
-        self.goal_y_lower = -0.2
+        self.goal_y_upper = 0.044
+        self.goal_y_lower = -0.044
 
         # ゴールのX座標
         self.left_goal_x = -1.0
