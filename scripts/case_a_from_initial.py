@@ -75,28 +75,30 @@ def main(cfg):
                 env.render()
             env.reset()
             done = False
+            step_count = 0
             shoot_detector = ShootDetector()
             chance_team_shoot_attempts = 0
 
             while not done:
                 obs, reward, done, info = env.step([])
+                step_count += 1
 
                 # シュートが検出された場合
                 if shoot_detector.update(obs):
                     chance_team_shoot_attempts += 1  # シュート試行回数をカウント
                     info["shoot_attempted"] = True  # フラグを設定
-                    shot_coords = (
-                        shoot_detector.dump_shot_coordinates()
-                    )  # シュート時のボール座標を取得
+                    shoot_info = shoot_detector.dump_shoot_info()  # シュート時のボール座標を取得
 
-                    if shot_coords:
+                    if shoot_info:
                         shoot_for_df.append(
                             {
                                 "frame_id": cfg.data.frame_id,
                                 "n_iter": i_iter + 1,
                                 "n_sub_iter": n_sub_iter_idx + 1,
-                                "shoot_x": shot_coords[0],
-                                "shoot_y": shot_coords[1],
+                                "shoot_x": shoot_info["coordinates"][0],
+                                "shoot_y": shoot_info["coordinates"][1],
+                                "shoot_direction_x": shoot_info["direction"][0],
+                                "shoot_direction_y": shoot_info["direction"][1],
                                 "ball_owned_team": obs[
                                     "ball_owned_team"
                                 ],  # シュートを打ったチーム
@@ -132,6 +134,7 @@ def main(cfg):
                     "chance_team": cfg.data.which_chance,
                     "winner": winner,
                     "shoots": chance_team_shoot_attempts,
+                    "step_count": step_count,  # ステップ数
                     "n_iter": i_iter + 1,  # 現在のn_iter
                     "n_sub_iter": n_sub_iter_idx + 1,  # 現在のn_sub_iter
                 }
