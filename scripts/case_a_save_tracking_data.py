@@ -87,9 +87,9 @@ def main(cfg):
     else:
         defeat_excess_logger()
     # 環境生成
-    p_scenario = "./scenarios/from_real_soccer_data.py"
+    p_scenario = "./scenarios/base_scenario.py"
     env_dict = dict(
-        representation="raw",  # 入力情報
+        representation="simple115",  # 入力情報
         stacked=False,
         number_of_left_players_agent_controls=0,
         number_of_right_players_agent_controls=0,
@@ -103,45 +103,6 @@ def main(cfg):
     if cfg.dump:
         env_dict["dump_full_episodes"] = True
 
-    data_dir = "data/unofficial/2023041506"
-    p_play = os.path.join(data_dir, "play.csv")
-    p_tracking = os.path.join(data_dir, "tracking.csv")
-    play_df = pd.read_csv(p_play, encoding="ansi")
-    tracking_df = pd.read_csv(p_tracking)
-
-    player_df = make_player_df_from_playdf(play_df)
-    tracking_df[["norm_X", "norm_Y"]] = tracking_df.swifter.apply(
-        lambda row: pd.Series(norm_xy_to_gfootball(row["X"], row["Y"])), axis=1
-    )
-
-    ini_frame = int(tracking_df.loc[tracking_df["No"] == 0, "Frame"].iloc[0])
-    tracking_framedf = tracking_df.loc[tracking_df["Frame"] == ini_frame]
-    player_df = assosiate_player_detail_role(player_df, tracking_framedf)
-
-    tracking_df = tracking_df.merge(
-        player_df[["ホームアウェイF", "選手背番号", "ポジション"]],
-        left_on=["HA", "No"],
-        right_on=["ホームアウェイF", "選手背番号"],
-        how="left",
-    )
-
-    # 特定フレームのデータ抽出
-    buff_frame = cfg.buf_time * cfg.fps
-    target_frame = cfg.data.frame_id - buff_frame
-    contain_ball_frames = (
-        tracking_df.loc[tracking_df["No"] == 0, "Frame"].unique().tolist()
-    )
-    approx_target_frame = find_nearest(contain_ball_frames, target_frame)
-    if cfg.debug:
-        print(f"[debug] Target frame: {target_frame}")
-        print(f"[debug] Approximate target frame: {approx_target_frame}")
-    tracking_framedf = tracking_df.loc[tracking_df["Frame"] == approx_target_frame]
-
-    scenario_file = make_scenario_from_real_data(tracking_framedf, cfg)
-
-    with open(p_scenario, "w", encoding="utf-8") as f:
-        f.write(scenario_file)
-
     plot_gfootball_scenario_with_roles(p_scenario, output_dir)
 
     env = create_environment_with_custom_environment(p_scenario, **env_dict)
@@ -152,8 +113,6 @@ def main(cfg):
     done = False
     step_count = 0
     tracking_data_records = []
-    current_game_id = cfg.data.frame_id
-
     while not done:
         _, _, done, info = env.step([])
         step_count += 1
@@ -165,7 +124,7 @@ def main(cfg):
         extracted_records = extract_data_from_raw(raw_obs[0] if isinstance(raw_obs, list) else raw_obs)
 
         for record in extracted_records:
-            record['GameID'] = current_game_id
+            record['GameID'] = 0
             record['Frame'] = step_count
             tracking_data_records.append(record)
 
@@ -179,7 +138,7 @@ def main(cfg):
 
     # CSVファイルとして保存
     output_dir
-    output_filename = f'simulated_tracking_data_{cfg.data.frame_id}.csv'
+    output_filename = f'simulated_tracking_data.csv'
     df_tracking.to_csv(
         os.path.join(output_dir, output_filename),
         index=False,
