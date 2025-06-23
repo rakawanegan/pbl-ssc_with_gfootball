@@ -33,7 +33,7 @@ def defeat_excess_logger():
     warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
-@hydra.main(version_base=None, config_path="conf", config_name="case_a")
+@hydra.main(version_base=None, config_path="conf", config_name="chance")
 def main(cfg):
     output_dir = HydraConfig.get().runtime.output_dir
     if cfg.debug:

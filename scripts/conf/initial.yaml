@@ -1,0 +1,19 @@
+hydra:
+  job:
+    chdir: false
+
+defaults:
+  - _self_
+  - data: shoot4
+
+debug: false
+render: false
+dump: false
+
+n_iter: 100
+n_sub_iter: 100
+
+fps: 25
+buf_time: 0
+
+game_duration: 200  # steps
