@@ -1,8 +1,0 @@
-debug: false
-n_iter: 100
-fps: 25
-buf_time: 10
-data:
-  frame_id: 1463820
-  is_goal: false
-  which_chance: Home
