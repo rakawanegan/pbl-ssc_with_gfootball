@@ -1,10 +1,11 @@
 from gfootball.scenarios import *
 
 def build_scenario(builder):
+    builder.config().physics_steps_per_frame = 4
     builder.config().game_duration = 3000
     builder.config().right_team_difficulty = 1.0
     builder.config().left_team_difficulty = 1.0
-    builder.config().deterministic = True
+    builder.config().deterministic = False
     builder.config().end_episode_on_score = False
     builder.config().end_episode_on_out_of_play = False
     builder.SetBallPosition(0.0, 0.0)
